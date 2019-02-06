@@ -1,7 +1,13 @@
-var app = express()
+const mongoService = require('../services/mongoService')
 
-const mongoService = require('../services/mongoService.js')
+const urlBase = "/mongo"
 
-app.get('/mongo/users/:id', (req, res) => {
-    res.status(200).send('Hola mundo redondo...!!!')
-})
+module.exports = app => {
+
+    app.get(urlBase + '/users/:name', (req, res) => {
+
+        usuario = mongoService.getUsuariosPorNick(req.params.name)
+
+        res.status(200).send(usuario)
+    })
+}

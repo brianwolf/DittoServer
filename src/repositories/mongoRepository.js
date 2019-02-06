@@ -1,15 +1,16 @@
-const mongoose = require('mongoose');
+module.exports = dbo => {
 
-MongoClient.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}`, function (err, db) {
+    const getUsuariosPorNick = function (nick) {
 
-    if (err) throw err;
+        var query = { "login.nick": nick };
+        dbo.collection("users").find(query).toArray((err, result) => {
 
-    var dbo = db.db(config.db.mongo.nombre);
-    var query = { "login.nick": "lobezzzno" };
-    dbo.collection("users").find(query).toArray(function (err, result) {
-        if (err) throw err;
+            if (err) throw err;
 
-        console.log(result);
-        db.close();
-    });
-});
+            console.log(result);
+            // db.close();
+
+            return result
+        })
+    }
+}

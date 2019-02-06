@@ -7,7 +7,7 @@
         "mongo": {
             "host": "localhost",
             "puerto": 27017,
-            "nombre": "TACS-UTN"
+            "base": "TACS-UTN"
         }
     }
 }

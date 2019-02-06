@@ -1,0 +1,6 @@
+{
+    "servidor": {
+        "host": "localhost",
+        "puerto": 5050
+    }
+}

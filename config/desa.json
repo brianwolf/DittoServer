@@ -2,5 +2,12 @@
     "servidor": {
         "host": "localhost",
         "puerto": 5050
+    },
+    "db": {
+        "mongo": {
+            "host": "localhost",
+            "puerto": 27017,
+            "nombre": "TACS-UTN"
+        }
     }
 }

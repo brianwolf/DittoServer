@@ -3,12 +3,15 @@ var http = require('http')
 var app = express()
 var MongoClient = require('mongodb').MongoClient
 
-const config = require('./config/desa.json')
+// ------------------------------------
+// ARCHIVO DE CONFIGURACION
+// ------------------------------------
+const config = require('./app/config/desa.json')
 
-app.get('/', (req, res) => {
-    res.status(200).send('Hola mundo redondo...!!!')
-})
 
+// ------------------------------------
+// BASE DE DATOS
+// ------------------------------------
 var option = { useNewUrlParser: true }
 const dbo = MongoClient.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}`, option, (err, coneccion) => {
 
@@ -16,9 +19,30 @@ const dbo = MongoClient.connect(`mongodb://${config.db.mongo.host}:${config.db.m
     return coneccion.db(config.db.mongo.base)
 })
 
-http.createServer(app).listen(config.servidor.puerto, () => {
-    console.log(`Servidor en http://${config.servidor.host}:${config.servidor.puerto}/`)
+
+// ------------------------------------
+// RUTAS
+// ------------------------------------
+const fs = require('fs');
+const pathDeLasRutas = './app/routes/'
+
+fs.readdirSync(pathDeLasRutas).forEach(archivo => {
+
+    var nombreArchivo = archivo.substr(0, archivo.indexOf('.'))
+    var rutaAExportar = pathDeLasRutas + nombreArchivo
+    console.log('ruta exportada -> ' + rutaAExportar)
+
+    require(rutaAExportar)(app);
+});
+
+
+// ------------------------------------
+// SERVIDOR
+// ------------------------------------
+app.get('/', (req, res) => {
+    res.status(200).send('Hola mundo redondo...!!!')
 })
 
-require('./src/controllers/mongoController')(app);
-require('./src/repositories/mongoRepository')(dbo);
+http.createServer(app).listen(config.servidor.puerto, () => {
+    console.log(`\nServidor escuchando en http://${config.servidor.host}:${config.servidor.puerto}/`)
+})

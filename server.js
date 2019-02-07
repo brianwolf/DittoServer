@@ -1,7 +1,8 @@
 var express = require('express')
 var http = require('http')
-var app = express()
-var MongoClient = require('mongodb').MongoClient
+// var MongoClient = require('mongodb').MongoClient
+
+const app = express()
 
 // ------------------------------------
 // ARCHIVO DE CONFIGURACION
@@ -12,18 +13,20 @@ const config = require('./app/config/desa.json')
 // ------------------------------------
 // BASE DE DATOS
 // ------------------------------------
+var mongoose = require('mongoose');
 var option = { useNewUrlParser: true }
-const dbo = MongoClient.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}`, option, (err, coneccion) => {
+mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${config.db.mongo.base}`, option, err => {
 
     if (err) throw err
-    return coneccion.db(config.db.mongo.base)
+    console.log(`Coneccion establecida con ${config.db.mongo.base}`)
 })
 
+exports.db = mongoose.connection
 
 // ------------------------------------
 // RUTAS
 // ------------------------------------
-const fs = require('fs');
+const fs = require('fs')
 const pathDeLasRutas = './app/routes/'
 
 fs.readdirSync(pathDeLasRutas).forEach(archivo => {

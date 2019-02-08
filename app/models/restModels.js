@@ -37,7 +37,7 @@ export class FuncionDitto {
   }
 }
 
-export class ErrorDitto extends Error {
+export class ErrorAplicacion extends Error {
 
   constructor(obj) {
     this.codigo = obj.codigo

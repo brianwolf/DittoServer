@@ -43,7 +43,7 @@ fs.readdirSync(pathDeLasRutas).forEach(archivo => {
 // SERVIDOR
 // ------------------------------------
 app.get('/', (req, res) => {
-    res.status(200).send('Hola mundo redondo...!!!')
+    res.status(200).send('Esta vivo, VIVO...!!!')
 })
 
 http.createServer(app).listen(config.servidor.puerto, () => {

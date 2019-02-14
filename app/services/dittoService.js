@@ -1,7 +1,9 @@
-const db = require('../../server').db
+const repository = require('../repositories/restRepository')
 
-exports.todosLosDittos = next => {
+const todosLosDittos = function () {
 
-    var dittos = db.find()
+    let dittos = repository.getDittosRests()
     return dittos
 }
+
+module.exports = { todosLosDittos }

@@ -1,6 +1,5 @@
-var express = require('express')
-var http = require('http')
-// var MongoClient = require('mongodb').MongoClient
+const express = require('express')
+const http = require('http')
 
 const app = express()
 
@@ -22,6 +21,7 @@ mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${
 })
 
 exports.db = mongoose.connection
+
 
 // ------------------------------------
 // RUTAS

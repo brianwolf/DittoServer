@@ -6,7 +6,13 @@ module.exports = function (app) {
 
     const urlBase = '/rest'
 
-    app.post(urlBase + '/funciones', function (req, res) {
+    app.get(urlBase + '/funciones', noImplementado)
+    app.post(urlBase + '/funciones', obtenerFunciones)
+
+    app.get(urlBase + '/dittos', noImplementado)
+    app.post(urlBase + '/dittos', noImplementado)
+
+    function obtenerFunciones(req, res) {
         repository.crearFuncion(req.body)
             .then(respuesta => {
                 res.status(201).send(respuesta)
@@ -14,11 +20,9 @@ module.exports = function (app) {
             .catch(e => {
                 errores.crearRespuestaRest(e, res)
             })
-    })
+    }
 
-
-    app.post('/test', function (req, res) {
-        if (!req.body) return res.sendStatus(400)
-        res.send(req.body)
-    })
+    function noImplementado(req, res) {
+        res.status(501).send()
+    }
 }

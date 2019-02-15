@@ -12,15 +12,25 @@ const config = require('./app/config/desa.json')
 // ------------------------------------
 // BASE DE DATOS
 // ------------------------------------
-var mongoose = require('mongoose');
-var option = { useNewUrlParser: true }
-mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${config.db.mongo.base}`, option, err => {
+const mongoose = require('mongoose');
+const option = { useNewUrlParser: true }
 
+mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${config.db.mongo.base}`, option, err => {
     if (err) throw err
     console.log(`Coneccion establecida con ${config.db.mongo.base}`)
 })
-
 exports.db = mongoose.connection
+
+
+// ------------------------------------
+// JSON
+// ------------------------------------
+const bodyParser = require('body-parser');
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const jsonParser = bodyParser.json()
+
+app.use(urlencodedParser)
+app.use(jsonParser)
 
 
 // ------------------------------------

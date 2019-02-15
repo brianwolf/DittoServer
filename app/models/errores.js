@@ -30,4 +30,14 @@ const CodigosHttp = {
     BASE_DE_DATOS: 700
 }
 
-module.exports = { ErrorAplicacion, TiposError, CodigosHttp }
+const crearRespuestaRest = function (err, res) {
+    
+    if (err instanceof ErrorAplicacion) {
+        res.status(err.getCodigoHttp()).send(err.crearRespuestaRest())
+    }
+
+    console.error(err);
+    res.status(500).send()
+}
+
+module.exports = { ErrorAplicacion, TiposError, CodigosHttp, crearRespuestaRest }

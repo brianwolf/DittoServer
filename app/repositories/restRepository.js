@@ -37,20 +37,14 @@ const crearDitto = function (dittoNuevo) {
 
 
 /**
+ * Trae todas las funciones rest de la base
  * 
  * @param {*} filtros 
  */
-const getFuncionesRests = function (filtros = {}) {
+const traerFuncionesRests = function (filtros = {}) {
 
-    let dittosRest = []
-    try {
-        dittosRest = FuncionRestModel.find(filtros).exec()
+    dittosRest = FuncionRestModel.find(filtros).exec()
 
-    } catch (error) {
-        console.error(error)
-        throw error
-    }
-    return dittosRest
 }
 
 
@@ -59,21 +53,6 @@ const getFuncionesRests = function (filtros = {}) {
  * 
  * @param {*} funcionNueva 
  */
-// const crearFuncion = function (funcionNueva) {
-
-//     // funcionNueva._id = new mongoose.Types.ObjectId
-
-//     modelo = new FuncionRestModel(funcionNueva)
-//     modelo.save(function (error, fun) {
-//         if (error) {
-//             console.error("error al guardar la funcion", error);
-//             Promise.reject(error)
-//         }
-//         return Promise.resolve(fun)
-//     })
-// }
-
-
 const crearFuncion = function (funcionNueva) {
 
     funcionNueva._id = new mongoose.Types.ObjectId
@@ -83,7 +62,11 @@ const crearFuncion = function (funcionNueva) {
         .then(() => {
             return { "id": funcionNueva._id }
         })
+        .catch(e => {
+            console.error("Error en la carga de la funcion\n", e)
+            throw e
+        })
 }
 
 
-module.exports = { getDittosRests, crearDitto, getFuncionesRests, crearFuncion }
+module.exports = { getDittosRests, crearDitto, traerFuncionesRests, crearFuncion }

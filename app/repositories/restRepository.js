@@ -31,15 +31,11 @@ const crearFuncionPorJson = function (funcionJson) {
 const getFuncionesJson = function (filtros = {}) {
 
     return FuncionRestModel.find(filtros).exec()
-        .then(resultado => {
-            return resultado
-        })
         .catch(e => {
             console.error(`Error en la obtencion de las funciones, los filtros fueron: ${filtros}`, e)
             throw e
         })
 }
-
 
 
 /**
@@ -70,11 +66,8 @@ const crearDittoPorJson = function (dittoJson) {
 const getDittosJson = function (filtros = {}) {
 
     return DittoRestModel.find(filtros).exec()
-        .then(resultado => {
-            return resultado
-        })
         .catch(e => {
-            console.error(`Error en la obtencion de las funciones, los filtros fueron: ${filtros}`, e)
+            console.error(`Error en la obtencion de los dittos, los filtros fueron: ${filtros}`, e)
             throw e
         })
 }

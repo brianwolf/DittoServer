@@ -5,7 +5,7 @@ class ErrorAplicacion extends Error {
         return new ErrorAplicacion(obj.mensaje, obj.codigo, obj.Error)
     }
 
-    constructor(mensaje, codigo, error) {
+    constructor(mensaje, codigo, error = null) {
         super(mensaje)
 
         this.codigo = codigo
@@ -25,6 +25,7 @@ class ErrorAplicacion extends Error {
 }
 
 const TiposError = {
+    FUNCION_NO_EXISTE: 'FUNCION_NO_EXISTE',
     EVALUACION: 'EVALUACION'
 }
 

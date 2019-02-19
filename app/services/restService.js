@@ -30,11 +30,7 @@ const getFuncionesJson = function (filtros) {
  */
 const getFuncionJsonPorId = function (id) {
 
-    let idFinal = id
-    if (typeof id == 'string') {
-        idFinal = new ObjectId(id)
-    }
-
+    let idFinal = typeof id == 'string' ? new ObjectId(id) : id
     return repository.getFuncionesJson({ '_id': idFinal })
 }
 
@@ -94,5 +90,6 @@ const getDittoJsonPorId = function (id) {
     let idFinal = typeof id == 'string' ? new ObjectId(id) : id
     return repository.getDittosJson({ '_id': idFinal })
 }
+
 
 module.exports = { crearFuncionPorJson, getFuncionesJson, getFuncionJsonPorId, crearDittoPorJson, getDittosJson, getDittoJsonPorId }

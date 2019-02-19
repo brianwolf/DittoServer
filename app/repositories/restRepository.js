@@ -23,6 +23,7 @@ const crearFuncionPorJson = function (funcionJson) {
         })
 }
 
+
 /**
  * Trae todas las funciones rest de la DB en formato Json (mismo formato que en la DB)
  * 
@@ -57,6 +58,7 @@ const crearDittoPorJson = function (dittoJson) {
             throw e
         })
 }
+
 
 /**
  * Trae todas las funciones rest de la DB en formato Json (mismo formato que en la DB)

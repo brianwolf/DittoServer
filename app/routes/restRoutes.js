@@ -6,11 +6,20 @@ module.exports = function (app) {
 
     const urlBase = '/rest'
 
-    app.post(urlBase + '/funciones', crearFuncionPorJson)
-    app.get(urlBase + '/funciones', getFuncionesJson)
+    app.route(urlBase + '/funciones')
+        .get(getFuncionesJson)
+        .post(crearDittoPorJson)
+        .delete(noImplementado)
+        .put(noImplementado)
 
-    app.post(urlBase + '/dittos', crearDittoPorJson)
-    app.get(urlBase + '/dittos', getDittosJson)
+
+    app.route(urlBase + '/dittos')
+        .post(crearDittoPorJson)
+        .get(getDittosJson)
+        .delete(noImplementado)
+        .put(noImplementado)
+
+    // app.get('/')
 
 
     function crearFuncionPorJson(req, res) {

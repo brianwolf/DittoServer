@@ -19,7 +19,7 @@ module.exports = function (app) {
         .delete(noImplementado)
         .put(noImplementado)
 
-    // app.get('/')
+    // app.route(/.*fly$/)
 
 
     function crearFuncionPorJson(req, res) {

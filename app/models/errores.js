@@ -1,21 +1,25 @@
 
 class ErrorAplicacion extends Error {
 
-    constructor(obj) {
-        super(obj.mensaje)
+    static crearPorJson(obj) {
+        return new ErrorAplicacion(obj.mensaje, obj.codigo, obj.Error)
+    }
 
-        this.codigo = obj.codigo
-        this.error = obj.error
+    constructor(mensaje, codigo, error) {
+        super(mensaje)
+
+        this.codigo = codigo
+        this.error = error
     }
 
     getCodigoHttp() {
         return CodigosHttp.APLICACION
     }
 
-    crearRespuestaRest() {
+    cuerpoRespuestaRest() {
         return {
             'codigo': this.codigo.toString(),
-            'mensaje': this.message
+            'mensaje': this.message.toString()
         }
     }
 }
@@ -24,16 +28,15 @@ const TiposError = {
     EVALUACION: 'EVALUACION'
 }
 
-
 const CodigosHttp = {
     APLICACION: 600,
     BASE_DE_DATOS: 700
 }
 
 const crearRespuestaRest = function (err, res) {
-    
+
     if (err instanceof ErrorAplicacion) {
-        res.status(err.getCodigoHttp()).send(err.crearRespuestaRest())
+        res.status(err.getCodigoHttp()).send(err.cuerpoRespuestaRest())
     }
 
     res.status(500).send()

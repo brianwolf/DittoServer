@@ -1,66 +1,21 @@
-const { DittoRestModel, FuncionRestModel } = require('../repositories/schemas/restSchemas')
 const mongoose = require("mongoose");
 
-/**
- * 
- * @param {*} filtros
- */
-const getDittosRests = function (filtros = {}) {
-
-    DittoRestModel.find(function (err, dittos) {
-        if (err) {
-            console.error("error al obtener los dittos", err);
-            throw err
-        }
-        return dittos
-    })
-}
-
+const { DittoRestModel, FuncionRestModel } = require('../repositories/schemas/restSchemas')
+const { FuncionRest } = require('../models/modelosRest')
 
 /**
+ * Crea una funcion mediante un JSON y devuelve la id generada
  * 
- * @param {*} dittoNuevo
+ * @param {*} funcionJson 
  */
-const crearDitto = function (dittoNuevo) {
+const crearFuncionPorJson = function (funcionJson) {
 
-    // dittoNuevo._id = mongoose.
+    funcionJson._id = new mongoose.Types.ObjectId()
 
-    modelo = new DittoRestModel(dittoNuevo)
-    modelo.save(function (err, ditto) {
-        if (err) {
-            console.error("error al guardar el ditto", err);
-            throw err
-        }
-        return ditto
-    })
-}
-
-
-/**
- * Trae todas las funciones rest de la base
- * 
- * @param {*} filtros 
- */
-const traerFuncionesRests = function (filtros = {}) {
-
-    dittosRest = FuncionRestModel.find(filtros).exec()
-
-}
-
-
-/**
- * Crea una funcion y devuelve la id
- * 
- * @param {*} funcionNueva 
- */
-const crearFuncion = function (funcionNueva) {
-
-    funcionNueva._id = new mongoose.Types.ObjectId
-
-    modelo = new FuncionRestModel(funcionNueva)
+    modelo = new FuncionRestModel(funcionJson)
     return modelo.save()
         .then(() => {
-            return { "id": funcionNueva._id }
+            return { "id": funcionJson._id }
         })
         .catch(e => {
             console.error("Error en la carga de la funcion\n", e)
@@ -68,5 +23,61 @@ const crearFuncion = function (funcionNueva) {
         })
 }
 
+/**
+ * Trae todas las funciones rest de la DB en formato Json (mismo formato que en la DB)
+ * 
+ * @param {*} filtros 
+ */
+const getFuncionesJson = function (filtros = {}) {
 
-module.exports = { getDittosRests, crearDitto, traerFuncionesRests, crearFuncion }
+    return FuncionRestModel.find(filtros).exec()
+        .then(resultado => {
+            return resultado
+        })
+        .catch(e => {
+            console.error(`Error en la obtencion de las funciones, los filtros fueron: ${filtros}`, e)
+            throw e
+        })
+}
+
+
+
+/**
+ * Crea un Ditto mediante un JSON y devuelve la id generada
+ * 
+ * @param {*} dittoJson 
+ */
+const crearDittoPorJson = function (dittoJson) {
+
+    dittoJson._id = new mongoose.Types.ObjectId()
+
+    modelo = new DittoRestModel(dittoJson)
+    return modelo.save()
+        .then(() => {
+            return { "id": dittoJson._id }
+        })
+        .catch(e => {
+            console.error("Error en la carga de la funcion\n", e)
+            throw e
+        })
+}
+
+/**
+ * Trae todas las funciones rest de la DB en formato Json (mismo formato que en la DB)
+ * 
+ * @param {*} filtros 
+ */
+const getDittosJson = function (filtros = {}) {
+
+    return DittoRestModel.find(filtros).exec()
+        .then(resultado => {
+            return resultado
+        })
+        .catch(e => {
+            console.error(`Error en la obtencion de las funciones, los filtros fueron: ${filtros}`, e)
+            throw e
+        })
+}
+
+
+module.exports = { crearFuncionPorJson, getFuncionesJson, crearDittoPorJson, getDittosJson }

@@ -1,20 +1,53 @@
 const { TiposError, ErrorAplicacion } = require('./errores')
+const { ObjectId } = require('mongoose').Types
 
-const nombreObjetoRequest = 'req'
-const nombreObjetoContexto = 'ctx'
+const nombreParametroRequest = 'req'
+const nombreParametroResponse = 'res'
+const nombreParametroContexto = 'ctx'
+const cuerpoFuncionDefault = 'res.status(200).send(ctx)'
+
+const funcionDefault = new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, cuerpoFuncionDefault)
+
+class EstructuraRest {
+
+    static crearPorJson(obj) {
+        return new DittoRest(
+            obj.url,
+            obj.tipo
+        )
+    }
+
+    constructor(url, tipo) {
+        this.url = url
+        this.tipo = tipo
+    }
+}
 
 class DittoRest {
 
-    constructor(obj) {
-        this.id = obj.id
-        this.url = obj.url
-        this.funcion = obj.funcion
-        this.contexto = obj.contexto
+    static crearPorJson(obj) {
+        return new DittoRest(
+            obj.nombre,
+            obj.proyecto,
+            FuncionRest.crearPorJson(obj.funcionRest),
+            obj.contexto,
+            obj._id,
+            obj.rest
+        )
     }
 
-    getRespuestaMockeada() {
+    constructor(nombre, proyecto = null, funcionRest, contexto, estructuraRest, _id = new ObjectId()) {
+        this._id = _id
+        this.nombre = nombre
+        this.proyecto = proyecto
+        this.funcionRest = funcionRest
+        this.contexto = contexto
+        this.estructuraRest = estructuraRest
+    }
+
+    ejecutarMock(req, res) {
         try {
-            return this.funcion(contexto)
+            return this.funcionRest(req, res, this.contexto)
 
         } catch (error) {
             throw new ErrorAplicacion({
@@ -28,13 +61,20 @@ class DittoRest {
 
 class FuncionRest {
 
-    constructor(obj) {
-        this.id = obj.id
-        this.funcionString = obj.funcionString
+    static crearPorJson(obj) {
+        return new FuncionRest(
+            obj.nombre,
+            obj.proyecto,
+            obj._id,
+            new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, obj.cuerpoFuncion)
+        )
     }
 
-    getFuncionEvaluada() {
-        return new Function(nombreObjetoRequest, nombreObjetoContexto, this.funcionString)
+    constructor(nombre, proyecto = null, _id = new ObjectId(), funcion = funcionDefault) {
+        this._id = _id
+        this.nombre = nombre
+        this.proyecto = proyecto
+        this.funcion = funcion
     }
 }
 

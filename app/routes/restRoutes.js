@@ -8,7 +8,7 @@ module.exports = function (app) {
 
     app.route(urlBase + '/funciones')
         .get(getFuncionesJson)
-        .post(crearDittoPorJson)
+        .post(crearFuncionPorJson)
         .delete(noImplementado)
         .put(noImplementado)
 
@@ -19,7 +19,12 @@ module.exports = function (app) {
         .delete(noImplementado)
         .put(noImplementado)
 
-    // app.route(/.*fly$/)
+    app.route(/.*/)
+        .get(ejecutarDitto)
+        .post(ejecutarDitto)
+        .put(ejecutarDitto)
+        .patch(ejecutarDitto)
+        .delete(ejecutarDitto)
 
 
     function crearFuncionPorJson(req, res) {
@@ -60,12 +65,12 @@ module.exports = function (app) {
 
     function getDittosJson(req, res) {
 
-        restService.getDittosJson(req.query)
+        restService.getDittosJson(req.query, res)
             .then(respuesta => {
                 if (!respuesta || respuesta.length == 0) {
-                    res.status(204).send()
+                    res.status(204).end()
                 }
-                res.status(200).send(respuesta)
+                res.status(200).json(respuesta)
             })
             .catch(e => {
                 errores.crearRespuestaRest(e, res)
@@ -75,4 +80,16 @@ module.exports = function (app) {
     function noImplementado(req, res) {
         res.status(501).send()
     }
+
+    function ejecutarDitto(req, res) {
+
+        let respuesta = {
+            "url": req.path,
+            "method": req.method,
+            "query": req.query,
+            "path": req.params
+        }
+        res.status(200).send(respuesta)
+    }
+
 }

@@ -1,6 +1,6 @@
 const repository = require('../repositories/restRepository')
 const errores = require('../models/errores')
-const { ObjectId } = require('mongoose').SchemaTypes
+const similarity = require('string-similarity');
 
 /**
  * Crea una nueva funcion en la BD
@@ -18,20 +18,8 @@ const crearFuncionPorJson = function (funcionJson) {
  * 
  * @param {*} filtros 
  */
-const getFuncionesJson = function (filtros) {
-    return repository.getFuncionesJson(filtros)
-}
-
-
-/**
- * Obtiene una funcion por su id
- * 
- * @param {*} id 
- */
-const getFuncionJsonPorId = function (id) {
-
-    let idFinal = typeof id == 'string' ? new ObjectId(id) : id
-    return repository.getFuncionesJson({ '_id': idFinal })
+const getFuncionesJson = async function (filtros) {
+    return await repository.getFuncionesJson(filtros)
 }
 
 
@@ -42,22 +30,19 @@ const getFuncionJsonPorId = function (id) {
  * 
  * @param {*} funcionJson 
  */
-const crearDittoPorJson = function (dittoJson) {
+const crearDittoPorJson = async function (dittoJson) {
 
-    return getFuncionesJson({ 'nombre': dittoJson.nombreFuncion })
-        .then(funciones => {
+    let funcion = await repository.getFuncion({ 'nombre': dittoJson.nombreFuncion })
+    if (!funcion) {
 
-            let funcion = funciones[0]
-            if (!funcion) {
-                let mensaje = `La funcion con el nombre ${dittoJson.nombreFuncion} no existe`
-                let codigo = errores.TiposError.FUNCION_NO_EXISTE
+        let mensaje = `La funcion con el nombre ${dittoJson.nombreFuncion} no existe`
+        let codigo = errores.TiposError.FUNCION_NO_EXISTE
 
-                throw new errores.ErrorAplicacion(mensaje, codigo)
-            }
+        throw new errores.ErrorAplicacion(mensaje, codigo)
+    }
 
-            dittoJson.funcion = funcion._id
-            return repository.crearDittoPorJson(dittoJson)
-        })
+    dittoJson.funcion = funcion._id
+    return await repository.crearDittoPorJson(dittoJson)
 }
 
 
@@ -67,29 +52,44 @@ const crearDittoPorJson = function (dittoJson) {
  * 
  * @param {*} filtros 
  */
-const getDittosJson = function (filtros) {
+const getDittosJson = async function (filtros) {
 
-    return repository.getDittosJson(filtros)
-        .then(dittos => {
+    let dittos = await repository.getDittosJson(filtros)
 
-            return dittos.map(ditto => {
-                ditto.funcion = getFuncionJsonPorId(ditto.funcion)
-                return ditto
-            })
-        })
+    for (const ditto of dittos) {
+        ditto.funcion = await repository.getFuncionJsonPorId(ditto.funcion)
+    }
+
+    return dittos
 }
-
 
 /**
- * Obtiene un ditto por su id
  * 
- * @param {*} id 
+ * @param {*} tipo 
+ * @param {*} require 
+ * @param {*} response 
  */
-const getDittoJsonPorId = function (id) {
+const ejecutarDitto = async function (require, response) {
 
-    let idFinal = typeof id == 'string' ? new ObjectId(id) : id
-    return repository.getDittosJson({ '_id': idFinal })
+    let tipo = require.method
+    let url = require.path
+
+    let ditto = await getDittosJson({ 'rest.url': url, 'rest.tipo': tipo })[0]
+    if (!ditto) {
+        ditto = getDittoMasParecido(url, tipo)
+    }
+
+}
+
+/**
+ * 
+ * @param {*} url 
+ * @param {*} tipo 
+ */
+const getDittoMasParecido = function (url, tipo) {
+    return getDittosJson()[0]
 }
 
 
-module.exports = { crearFuncionPorJson, getFuncionesJson, getFuncionJsonPorId, crearDittoPorJson, getDittosJson, getDittoJsonPorId }
+
+module.exports = { crearFuncionPorJson, getFuncionesJson, crearDittoPorJson, getDittosJson }

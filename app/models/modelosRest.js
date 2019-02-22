@@ -11,7 +11,7 @@ const funcionDefault = new Function(nombreParametroRequest, nombreParametroRespo
 class EstructuraRest {
 
     static crearPorJson(obj) {
-        return new DittoRest(
+        return new EstructuraRest(
             obj.url,
             obj.tipo
         )
@@ -29,20 +29,20 @@ class DittoRest {
         return new DittoRest(
             obj.nombre,
             obj.proyecto,
-            FuncionRest.crearPorJson(obj.funcionRest),
+            obj.funcion,
             obj.contexto,
-            obj._id,
-            obj.rest
+            obj.rest,
+            obj._id
         )
     }
 
-    constructor(nombre, proyecto = null, funcionRest, contexto, estructuraRest, _id = new ObjectId()) {
-        this._id = _id
+    constructor(nombre, proyecto = null, funcion, contexto, rest, _id = new ObjectId()) {
         this.nombre = nombre
         this.proyecto = proyecto
-        this.funcionRest = funcionRest
+        this.funcion = funcion
         this.contexto = contexto
-        this.estructuraRest = estructuraRest
+        this.rest = EstructuraRest.crearPorJson(rest)
+        this._id = _id
     }
 
     ejecutarMock(req, res) {
@@ -65,16 +65,20 @@ class FuncionRest {
         return new FuncionRest(
             obj.nombre,
             obj.proyecto,
-            obj._id,
-            new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, obj.cuerpoFuncion)
+            obj.cuerpoFuncion,
+            obj._id
         )
     }
 
-    constructor(nombre, proyecto = null, _id = new ObjectId(), funcion = funcionDefault) {
-        this._id = _id
+    constructor(nombre, proyecto = null, cuerpoFuncion = funcionDefault, _id = new ObjectId()) {
         this.nombre = nombre
         this.proyecto = proyecto
-        this.funcion = funcion
+        this.cuerpoFuncion = cuerpoFuncion
+        this._id = _id
+    }
+
+    getFuncionEvaluada() {
+        new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, this.cuerpoFuncion)
     }
 }
 

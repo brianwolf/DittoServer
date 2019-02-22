@@ -40,6 +40,7 @@ const crearRespuestaRest = function (err, res) {
         res.status(err.getCodigoHttp()).send(err.cuerpoRespuestaRest())
     }
 
+    console.error(err)
     res.status(500).send()
 }
 

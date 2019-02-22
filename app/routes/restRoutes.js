@@ -7,15 +7,15 @@ module.exports = function (app) {
     const urlBase = '/rest'
 
     app.route(urlBase + '/funciones')
-        .get(getFuncionesJson)
-        .post(crearFuncionPorJson)
+        .get(getFunciones)
+        .post(crearFuncion)
         .delete(noImplementado)
         .put(noImplementado)
 
 
     app.route(urlBase + '/dittos')
-        .post(crearDittoPorJson)
-        .get(getDittosJson)
+        .post(crearDitto)
+        .get(getDittos)
         .delete(noImplementado)
         .put(noImplementado)
 
@@ -27,9 +27,9 @@ module.exports = function (app) {
         .delete(ejecutarDitto)
 
 
-    function crearFuncionPorJson(req, res) {
+    function crearFuncion(req, res) {
 
-        restService.crearFuncionPorJson(req.body)
+        restService.crearFuncion(req.body)
             .then(() => {
                 res.status(201).send()
             })
@@ -38,9 +38,9 @@ module.exports = function (app) {
             })
     }
 
-    function getFuncionesJson(req, res) {
+    function getFunciones(req, res) {
 
-        restService.getFuncionesJson(req.query)
+        restService.getFunciones(req.query)
             .then(respuesta => {
                 if (!respuesta || respuesta.length == 0) {
                     res.status(204).send()
@@ -52,9 +52,9 @@ module.exports = function (app) {
             })
     }
 
-    function crearDittoPorJson(req, res) {
+    function crearDitto(req, res) {
 
-        restService.crearDittoPorJson(req.body)
+        restService.crearDitto(req.body)
             .then(() => {
                 res.status(201).send()
             })
@@ -63,9 +63,9 @@ module.exports = function (app) {
             })
     }
 
-    function getDittosJson(req, res) {
+    function getDittos(req, res) {
 
-        restService.getDittosJson(req.query, res)
+        restService.getDittos(req.query, res)
             .then(respuesta => {
                 if (!respuesta || respuesta.length == 0) {
                     res.status(204).end()

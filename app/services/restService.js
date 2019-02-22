@@ -7,8 +7,8 @@ const similarity = require('string-similarity');
  * 
  * @param {*} funcionJson 
  */
-const crearFuncionPorJson = function (funcionJson) {
-    return repository.crearFuncionPorJson(funcionJson)
+const crearFuncion = function (funcionJson) {
+    return repository.crearFuncion(funcionJson)
 }
 
 
@@ -18,8 +18,8 @@ const crearFuncionPorJson = function (funcionJson) {
  * 
  * @param {*} filtros 
  */
-const getFuncionesJson = async function (filtros) {
-    return await repository.getFuncionesJson(filtros)
+const getFunciones = async function (filtros) {
+    return await repository.getFunciones(filtros)
 }
 
 
@@ -30,7 +30,7 @@ const getFuncionesJson = async function (filtros) {
  * 
  * @param {*} funcionJson 
  */
-const crearDittoPorJson = async function (dittoJson) {
+const crearDitto = async function (dittoJson) {
 
     let funcion = await repository.getFuncion({ 'nombre': dittoJson.nombreFuncion })
     if (!funcion) {
@@ -52,12 +52,12 @@ const crearDittoPorJson = async function (dittoJson) {
  * 
  * @param {*} filtros 
  */
-const getDittosJson = async function (filtros) {
+const getDittos = async function (filtros) {
 
-    let dittos = await repository.getDittosJson(filtros)
+    let dittos = await repository.getDittos(filtros)
 
     for (const ditto of dittos) {
-        ditto.funcion = await repository.getFuncionJsonPorId(ditto.funcion)
+        ditto.funcion = await repository.getFuncionPorId(ditto.funcion)
     }
 
     return dittos
@@ -74,7 +74,7 @@ const ejecutarDitto = async function (require, response) {
     let tipo = require.method
     let url = require.path
 
-    let ditto = await getDittosJson({ 'rest.url': url, 'rest.tipo': tipo })[0]
+    let ditto = await getDittos({ 'rest.url': url, 'rest.tipo': tipo })[0]
     if (!ditto) {
         ditto = getDittoMasParecido(url, tipo)
     }
@@ -87,9 +87,9 @@ const ejecutarDitto = async function (require, response) {
  * @param {*} tipo 
  */
 const getDittoMasParecido = function (url, tipo) {
-    return getDittosJson()[0]
+    return getDittos()[0]
 }
 
 
 
-module.exports = { crearFuncionPorJson, getFuncionesJson, crearDittoPorJson, getDittosJson }
+module.exports = { crearFuncion, getFunciones, crearDitto, getDittos }

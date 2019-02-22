@@ -28,7 +28,6 @@ const crearFuncion = async function (funcionJson) {
  * @param {*} filtros 
  */
 const getFunciones = async function (filtros = {}) {
-
     try {
         let modelos = await FuncionRestModel.find(filtros).exec()
 
@@ -49,7 +48,6 @@ const getFunciones = async function (filtros = {}) {
  * @param {*} filtros 
  */
 const getFuncion = async function (filtros = {}) {
-
     try {
         let modelo = await FuncionRestModel.findOne(filtros).exec()
         return FuncionRest.crearPorJson(modelo)
@@ -67,7 +65,6 @@ const getFuncion = async function (filtros = {}) {
  * @param {*} id 
  */
 const getFuncionPorId = async function (id) {
-
     try {
         let modelo = await FuncionRestModel.findById(id).exec()
         return FuncionRest.crearPorJson(modelo)
@@ -136,7 +133,6 @@ const getDittoPorId = async function (id) {
  * @param {*} filtros 
  */
 const getDitto = async function (filtros = {}) {
-
     try {
         let modelo = await DittoRestModel.findOne(filtros).exec()
         return DittoRest.crearPorJson(modelo)

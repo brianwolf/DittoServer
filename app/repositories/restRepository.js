@@ -135,7 +135,15 @@ const getDittoPorId = async function (id) {
 const getDitto = async function (filtros = {}) {
     try {
         let modelo = await DittoRestModel.findOne(filtros).exec()
-        return DittoRest.crearPorJson(modelo)
+        if (!modelo) {
+            return null
+        }
+
+        let ditto = await DittoRest.crearPorJson(modelo)
+        let funcion = await getFuncionPorId(ditto.funcion)
+        
+        ditto.funcion = funcion
+        return ditto
 
     } catch (error) {
         console.error(`Error en la obtencion del Ditto, los filtros fueron: ${filtros}`, error)

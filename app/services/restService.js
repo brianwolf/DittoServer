@@ -74,11 +74,18 @@ const ejecutarDitto = async function (require, response) {
     let tipo = require.method
     let url = require.path
 
-    let ditto = await getDittos({ 'rest.url': url, 'rest.tipo': tipo })[0]
+    let ditto = await repository.getDitto({ 'rest': { 'url': url, 'tipo': tipo } })
     if (!ditto) {
-        ditto = getDittoMasParecido(url, tipo)
+        ditto = await getDittoMasParecido(url, tipo)
     }
 
+    return await ditto.ejecutarMock(require, response)
+    // let respuesta = {
+    //     "url": req.path,
+    //     "method": req.method,
+    //     "query": req.query,
+    //     "path": req.params
+    // }
 }
 
 /**
@@ -92,4 +99,4 @@ const getDittoMasParecido = function (url, tipo) {
 
 
 
-module.exports = { crearFuncion, getFunciones, crearDitto, getDittos }
+module.exports = { crearFuncion, getFunciones, crearDitto, getDittos, ejecutarDitto }

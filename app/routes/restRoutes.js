@@ -83,13 +83,10 @@ module.exports = function (app) {
 
     function ejecutarDitto(req, res) {
 
-        let respuesta = {
-            "url": req.path,
-            "method": req.method,
-            "query": req.query,
-            "path": req.params
-        }
-        res.status(200).send(respuesta)
+        restService.ejecutarDitto(req, res)
+            .catch(e => {
+                errores.crearRespuestaRest(e, res)
+            })
     }
 
 }

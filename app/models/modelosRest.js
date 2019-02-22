@@ -47,7 +47,8 @@ class DittoRest {
 
     ejecutarMock(req, res) {
         try {
-            return this.funcionRest(req, res, this.contexto)
+            let funcionReal = this.funcion.getFuncionEvaluada()
+            return funcionReal(req, res, this.contexto)
 
         } catch (error) {
             throw new ErrorAplicacion({
@@ -78,7 +79,7 @@ class FuncionRest {
     }
 
     getFuncionEvaluada() {
-        new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, this.cuerpoFuncion)
+        return new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, this.cuerpoFuncion)
     }
 }
 

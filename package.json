@@ -4,15 +4,17 @@
   "description": "Mockeador de servicios Rest",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon --experimental-modules app.js"
   },
+  "type": "module",
   "author": "Brian Lobo",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongoose": "^5.4.10",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.1",
     "string-similarity": "^3.0.0"
   }
 }

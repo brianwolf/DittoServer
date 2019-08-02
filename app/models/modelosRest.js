@@ -1,4 +1,5 @@
 const { TiposError, ErrorAplicacion } = require('./errores')
+// import { TiposError, ErrorAplicacion } from "./errores"
 const { ObjectId } = require('mongoose').Types
 
 const nombreParametroRequest = 'req'

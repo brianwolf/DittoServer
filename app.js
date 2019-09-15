@@ -19,7 +19,6 @@ mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${
     if (err) throw err
     console.log(`Coneccion establecida con ${config.db.mongo.base}`)
 })
-// exports.db = mongoose.connection
 
 
 // ------------------------------------

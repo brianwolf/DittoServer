@@ -1,55 +1,36 @@
-const { TiposError, ErrorAplicacion } = require('./errores')
-// import { TiposError, ErrorAplicacion } from "./errores"
-const { ObjectId } = require('mongoose').Types
+import { TiposError, ErrorAplicacion } from './errores'
+import { Types } from 'mongoose'
 
 const nombreParametroRequest = 'req'
-const nombreParametroResponse = 'res'
 const nombreParametroContexto = 'ctx'
 const cuerpoFuncionDefault = 'res.status(200).send(ctx)'
 
-const funcionDefault = new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, cuerpoFuncionDefault)
+const funcionDefault = new Function(nombreParametroRequest, nombreParametroContexto, cuerpoFuncionDefault)
 
-class EstructuraRest {
+export class EstructuraRest {
 
-    static crearPorJson(obj) {
-        return new EstructuraRest(
-            obj.url,
-            obj.tipo
-        )
-    }
-
-    constructor(url, tipo) {
+    constructor(url, verbo) {
         this.url = url
-        this.tipo = tipo
+        this.verbo = verbo
     }
 }
 
-class DittoRest {
+export class DittoRest {
 
-    static crearPorJson(obj) {
-        return new DittoRest(
-            obj.nombre,
-            obj.proyecto,
-            obj.funcion,
-            obj.contexto,
-            obj.rest,
-            obj._id
-        )
-    }
-
-    constructor(nombre, proyecto = null, funcion, contexto, rest, _id = new ObjectId()) {
+    constructor(nombre, proyecto = null, funcion, contexto, url, verbo, _id = new Types.ObjectId()) {
         this.nombre = nombre
         this.proyecto = proyecto
         this.funcion = funcion
         this.contexto = contexto
-        this.rest = EstructuraRest.crearPorJson(rest)
+        this.url = url
+        this.verbo = verbo
         this._id = _id
     }
 
     ejecutarMock(req, res) {
         try {
-            let funcionReal = this.funcion.getFuncionEvaluada()
-            return funcionReal(req, res, this.contexto)
+            let funcionEvaluada = this.funcion.getFuncionEvaluada()
+            return funcionEvaluada(req, res, this.contexto)
 
         } catch (error) {
             throw new ErrorAplicacion({
@@ -61,18 +42,9 @@ class DittoRest {
     }
 }
 
-class FuncionRest {
+export class FuncionRest {
 
-    static crearPorJson(obj) {
-        return new FuncionRest(
-            obj.nombre,
-            obj.proyecto,
-            obj.cuerpoFuncion,
-            obj._id
-        )
-    }
-
-    constructor(nombre, proyecto = null, cuerpoFuncion = funcionDefault, _id = new ObjectId()) {
+    constructor(nombre, cuerpoFuncion = funcionDefault, _id = new Types.ObjectId()) {
         this.nombre = nombre
         this.proyecto = proyecto
         this.cuerpoFuncion = cuerpoFuncion
@@ -80,8 +52,32 @@ class FuncionRest {
     }
 
     getFuncionEvaluada() {
-        return new Function(nombreParametroRequest, nombreParametroResponse, nombreParametroContexto, this.cuerpoFuncion)
+        return new Function(nombreParametroRequest, nombreParametroContexto, this.cuerpoFuncion)
     }
 }
 
-module.exports = { DittoRest, FuncionRest }
+export class Proyecto {
+
+    constructor(nombre, dittos, otrosProyectos, _id = new Types.ObjectId()) {
+        this.nombre = nombre
+        this.dittos = dittos
+        this.otrosProyectos = otrosProyectos
+        this._id = _id
+    }
+}
+
+
+export class Respuesta {
+
+    constructor(codigoHttp, cuerpo = {}, encabezados = []) {
+        this.codigoHttp = codigoHttp
+        this.cuerpo = cuerpo
+        this.encabezados = encabezados
+    }
+
+    esValido() {
+        return this.codigoHttp != null
+    }
+}
+
+

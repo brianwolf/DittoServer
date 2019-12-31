@@ -15,4 +15,4 @@ export const mapa = {
 }
 
 
-export const no_monstar = ['MONGO_PASS']
+export const no_mostrar = ['MONGO_PASS']

@@ -13,7 +13,7 @@ cargaDinamicaRoutes(app)
 
 app.get('/', (req, res) => {
     getLogger().info('vivo!!!')
-    res.status(200).send({ estado: 'vivo!!!' })
+    res.status(200).send({ ditto: 'yo te elijo' })
 })
 
 

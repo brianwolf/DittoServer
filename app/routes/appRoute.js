@@ -3,9 +3,7 @@ import { mapa, no_mostrar } from "../config/MapaVariables.js";
 import { get } from "../config/variables.js";
 
 export const rutaBase = ''
-
 export const router = express.Router();
-export default () => router
 
 
 router.get('/variables', obtenerVariables)

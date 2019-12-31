@@ -18,7 +18,7 @@ export function cargaDinamicaRoutes(app) {
         console.log('ruta exportada -> ' + rutaAExportar)
 
         const moduloConRuta = await import(rutaAExportar)
-        app.use(moduloConRuta.rutaBase, await moduloConRuta.default());
+        app.use(moduloConRuta.rutaBase, moduloConRuta.router);
     });
 }
 

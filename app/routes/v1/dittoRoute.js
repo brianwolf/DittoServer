@@ -1,11 +1,12 @@
 import express from 'express';
 
-export const rutaBase = '/dittos'
+export const rutaBase = ''
+export const router = express.Router();
 
-const router = express.Router();
 
-router.get('', (req, res) => {
-    res.status(200).send('Esta vivo, VIVO...!!!')
-})
+router.get('/prueba', prueba)
 
-export default async () => router
+function prueba(req, res) {
+    res.status(200).send({ funciona: 'como los mejores' })
+}
+

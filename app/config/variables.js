@@ -1,8 +1,5 @@
-import fs from 'fs';
 import process from 'process';
-import { mapa } from './variablesMap.js';
-
-// const variablesJson = JSON.parse(fs.readFileSync('./app/config/variablesMap.json'));
+import { mapa } from './MapaVariables.js';
 
 /**
  * 

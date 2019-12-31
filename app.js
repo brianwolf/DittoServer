@@ -1,61 +1,26 @@
 import express from 'express';
+// import fs from 'fs';
+import * as logger from './app/config/logger.js';
+import * as rest from './app/config/rest.js';
+import * as vars from './app/config/variables.js';
+import { cargaDinamicaRoutes } from './app/utils/express_util.js';
 
 const app = express()
 
-import * as vars from './app/config/variables.js'
+rest.configrarExpress(app)
 
+// const pathDeLasRutas = './app/routes'
+cargaDinamicaRoutes(app)
 
-// ------------------------------------
-// BASE DE DATOS
-// ------------------------------------
-import mongoose from 'mongoose';
-const option = { useUnifiedTopology: true, useNewUrlParser: true }
+// fs.readdirSync(pathDeLasRutas).forEach(async archivo => {
 
-const MONGO_USER = vars.get('MONGO_USER')
-const MONGO_PASS = vars.get('MONGO_PASS')
-const MONGO_HOST = vars.get('MONGO_HOST')
-const MONGO_PORT = vars.get('MONGO_PORT')
-const MONGO_DB = vars.get('MONGO_DB')
+//     var rutaAExportar = pathDeLasRutas + '/' + archivo
+//     console.log('ruta exportada -> ' + rutaAExportar)
 
-const coneccion_str = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
+//     const moduloConRuta = await import(rutaAExportar)
+//     app.use('/', await moduloConRuta.default());
+// });
 
-mongoose.connect(coneccion_str, option, err => {
-    if (err) throw err
-    console.log(`Coneccion establecida con ${MONGO_DB}`)
-})
-
-
-// ------------------------------------
-// JSON
-// ------------------------------------
-import bodyParser from 'body-parser';
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
-const jsonParser = bodyParser.json()
-
-app.use(urlencodedParser)
-app.use(jsonParser)
-
-
-// ------------------------------------
-// RUTAS
-// ------------------------------------
-import fs from 'fs'
-const pathDeLasRutas = './app/routes'
-
-fs.readdirSync(pathDeLasRutas).forEach(async archivo => {
-
-    var rutaAExportar = pathDeLasRutas + '/' + archivo
-    console.log('ruta exportada -> ' + rutaAExportar)
-
-    const moduloConRuta = await import(rutaAExportar)
-    app.use('/', await moduloConRuta.default());
-});
-
-
-// ------------------------------------
-// SERVIDOR
-// ------------------------------------
-import * as logger from './app/config/logger.js'
 
 app.get('/', (req, res) => {
 

@@ -1,26 +1,15 @@
 import log4js from 'log4js'
 import * as vars from './variables.js'
 
-// log4js.configure({
-//     appenders: { cheese: { type: 'file', filename: './logs/cheese.log' } },
-//     categories: { default: { appenders: ['cheese'], level: 'debug' } }
-// });
-
-// const logger = log4js.getLogger('cheese');
-// logger.trace('Entering cheese testing');
-// logger.debug('Got cheese.');
-// logger.info('Cheese is Comté.');
-// logger.warn('Cheese is quite smelly.');
-// logger.error('Cheese is too ripe!');
-// logger.fatal('Cheese was breeding ground for listeria.');
-
 const LOG_PREDEFINIDO = vars.get('LOG_PREDEFINIDO')
 const LOGS_RUTA = vars.get('LOGS_RUTA')
 const LOGS_NIVEL = vars.get('LOGS_NIVEL')
 
-let loggers = {}
+var loggers = {}
 
 /**
+ * Devuelve un logger con log4js creando el logger en caso de ser necesario,
+ * en caso de no enviarle ningun argumento usa el log predefido
  * 
  * @param {*} nombreArchivo 
  */
@@ -28,7 +17,7 @@ export function getLogger(nombreLog = LOG_PREDEFINIDO) {
 
     for (const nombre of Object.keys(loggers)) {
         if (nombre == nombreLog) {
-            return logger[nombreLog]
+            return loggers[nombreLog]
         }
     }
 
@@ -45,4 +34,3 @@ export function getLogger(nombreLog = LOG_PREDEFINIDO) {
 
     return loggerNuevo
 }
-

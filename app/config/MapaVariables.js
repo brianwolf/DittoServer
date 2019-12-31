@@ -13,3 +13,6 @@ export const mapa = {
     LOGS_NIVEL: 'debug',
     LOG_PREDEFINIDO: 'app'
 }
+
+
+export const no_monstar = ['MONGO_PASS']

@@ -3,21 +3,25 @@ import http from 'http';
 
 const app = express()
 
-// ------------------------------------
-// ARCHIVO DE CONFIGURACION
-// ------------------------------------
-import config from './app/config/desa.json'
 
+import { get_var } from './app/config/variables.js'
 
 // ------------------------------------
 // BASE DE DATOS
 // ------------------------------------
 import mongoose from 'mongoose';
-const option = { useNewUrlParser: true }
+const option = { useUnifiedTopology: true, useNewUrlParser: true }
 
-mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${config.db.mongo.base}`, option, err => {
+const mongoUser = get_var('mongoUser')
+const mongoPass = get_var('mongoPass')
+const mongoHost = get_var('mongoHost')
+const mongoPort = get_var('mongoPort')
+const mongoBase = get_var('mongoBase')
+const coneccion_str = `mongodb://${mongoUser}:${mongoPass}@${mongoHost}:${mongoPort}/${mongoBase}?authSource=admin`
+
+mongoose.connect(coneccion_str, option, err => {
     if (err) throw err
-    console.log(`Coneccion establecida con ${config.db.mongo.base}`)
+    console.log(`Coneccion establecida con ${mongoBase}`)
 })
 
 
@@ -55,8 +59,10 @@ app.get('/', (req, res) => {
     res.status(200).send('Esta vivo, VIVO...!!!')
 })
 
-http.createServer(app).listen(config.servidor.puerto, () => {
-    console.log(`\nServidor escuchando en http://${config.servidor.host}:${config.servidor.puerto}/`)
+
+
+app.listen(get_var('port'), () => {
+    console.log(`\nServidor escuchando en http://${get_var('host')}:${get_var('port')}/`)
 })
 
 export default app;

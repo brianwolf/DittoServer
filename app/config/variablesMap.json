@@ -1,0 +1,9 @@
+{
+    "host": "localhost",
+    "port": 7000,
+    "mongoHost": "localhost",
+    "mongoPort": 27017,
+    "mongoBase": "dittoServer",
+    "mongoUser": "leafnoise",
+    "mongoPass": "leafnoise"
+}

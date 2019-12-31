@@ -1,8 +1,8 @@
 
-class ErrorAplicacion extends Error {
+class AppException extends Error {
 
     static crearPorJson(obj) {
-        return new ErrorAplicacion(obj.mensaje, obj.codigo, obj.Error)
+        return new AppException(obj.mensaje, obj.codigo, obj.Error)
     }
 
     constructor(mensaje, codigo, error = null) {
@@ -36,7 +36,7 @@ const CodigosHttp = {
 
 const crearRespuestaRest = function (err, res) {
 
-    if (err instanceof ErrorAplicacion) {
+    if (err instanceof AppException) {
         res.status(err.getCodigoHttp()).send(err.cuerpoRespuestaRest())
     }
 
@@ -44,4 +44,4 @@ const crearRespuestaRest = function (err, res) {
     res.status(500).send()
 }
 
-module.exports = { ErrorAplicacion, TiposError, CodigosHttp, crearRespuestaRest }
+module.exports = { AppException: ErrorAplicacion, TiposError, CodigosHttp, crearRespuestaRest }

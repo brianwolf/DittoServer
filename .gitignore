@@ -137,3 +137,7 @@ _UpgradeReport_Files/
 __pycache__
 .DS_Store
 *~
+
+
+# LOGS
+/logs

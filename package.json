@@ -4,8 +4,8 @@
   "description": "Mockeador de servicios Rest",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "nodemon": "nodemon --experimental-modules app.js",
+    "start": "node --experimental-modules app.js",
+    "demon": "nodemon --experimental-modules app.js",
     "stop": "kill $(lsof -t -i:7000)"
   },
   "type": "module",
@@ -17,6 +17,6 @@
     "mongoose": "^5.4.10",
     "nodemon": "^1.19.1",
     "string-similarity": "^3.0.0",
-    "logger": "^0.0.1"
+    "log4js": "^6.1.0"
   }
 }

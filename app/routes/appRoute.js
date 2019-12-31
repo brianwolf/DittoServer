@@ -1,21 +1,16 @@
 import express from 'express';
 import { mapa, no_mostrar } from "../config/MapaVariables.js";
 import { get } from "../config/variables.js";
+import { AppException } from "../models/errores.js";
 
 export const rutaBase = ''
 export const router = express.Router();
 
-
-router.get('/variables', obtenerVariables)
-
 /**
  * Devuelve las variables de ambiente cargadas en el proyecto
  * que no esten en la lista de **no_mostrar**
- * 
- * @param {*} req 
- * @param {*} res 
  */
-function obtenerVariables(req, res) {
+router.get('/variables', (req, res) => {
 
     let mapaVariables = {}
 
@@ -24,5 +19,19 @@ function obtenerVariables(req, res) {
         .map(v => mapaVariables[v] = get(v))
 
     res.status(200).send(mapaVariables)
-}
+})
+
+/**
+ * Prueba de error handler para una **AppException**
+ */
+router.get('/errores', (req, res) => {
+    throw new AppException('ERROR_PRUEBA', 'Error de prueba')
+})
+
+/**
+ * Prueba de error handler para un **Error no controlado**
+ */
+router.get('/errores/500', (req, res) => {
+    throw new Error('Se rompio todo :(')
+})
 

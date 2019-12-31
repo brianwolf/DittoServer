@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { getLogger } from '../config/logger.js'
-import process from 'process'
+import process from 'process';
+import { configrarExpress } from "../config/rest.js";
 
 const directorioRutas = process.cwd() + '/app/routes'
 
@@ -18,12 +18,16 @@ export function cargaDinamicaRoutes(app) {
         console.log('ruta exportada -> ' + rutaAExportar)
 
         const moduloConRuta = await import(rutaAExportar)
+
+        configrarExpress(moduloConRuta.router)
+
         app.use(moduloConRuta.rutaBase, moduloConRuta.router);
     });
 }
 
 
 /**
+ * Carga las rutas de los archivos recursivamente de un directorio 
  * 
  * @param {*} ruta 
  */

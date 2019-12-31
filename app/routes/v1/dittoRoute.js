@@ -4,9 +4,8 @@ export const rutaBase = ''
 export const router = express.Router();
 
 
-router.get('/prueba', prueba)
-
-function prueba(req, res) {
+router.get('/prueba', (req, res) => {
+    
     res.status(200).send({ funciona: 'como los mejores' })
 }
-
+)

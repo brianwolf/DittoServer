@@ -4,11 +4,10 @@ import { configrarExpress } from './app/config/rest.js';
 import { get } from './app/config/variables.js';
 import { cargaDinamicaRoutes } from './app/utils/express_util.js';
 
-const app = express()
+let app = express()
 
 configrarExpress(app)
 cargaDinamicaRoutes(app)
-
 
 app.get('/', (req, res) => {
     getLogger().info('vivo!!!')

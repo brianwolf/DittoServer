@@ -11,6 +11,12 @@ var loggers = {}
  * Devuelve un logger con log4js creando el logger en caso de ser necesario,
  * en caso de no enviarle ningun argumento usa el log predefido
  * 
+ * **Uso:**
+ * 
+ * - getLogger().info('hola :)')
+ * - getLogger().warn('tenemos que hablar')
+ * - getLogger().error('AAAAHHHH....!!!!')
+ * 
  * @param {*} nombreArchivo 
  */
 export function getLogger(nombreLog = LOG_PREDEFINIDO) {

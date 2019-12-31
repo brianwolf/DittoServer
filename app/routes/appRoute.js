@@ -1,6 +1,6 @@
 import express from 'express';
 import { mapa, no_mostrar } from "../config/MapaVariables.js";
-import { get } from "../config/variables.js";
+import * as vars from "../config/variables.js";
 import { AppException } from "../models/errores.js";
 
 export const rutaBase = ''
@@ -16,7 +16,7 @@ router.get('/variables', (req, res) => {
 
     Object.keys(mapa)
         .filter(v => no_mostrar.some(nm => nm != v))
-        .map(v => mapaVariables[v] = get(v))
+        .map(v => mapaVariables[v] = vars.get(v))
 
     res.status(200).send(mapaVariables)
 })

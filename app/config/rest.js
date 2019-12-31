@@ -29,7 +29,7 @@ export function errorHandler(err, req, res, next) {
 
     if (err instanceof AppException) {
 
-        getLogger().warn(err.respuesta())
+        getLogger().warn('AppException', err.respuesta())
         res.status(err.http()).send(err.respuesta());
         return
     }

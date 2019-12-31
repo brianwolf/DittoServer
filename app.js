@@ -9,6 +9,7 @@ let app = express()
 configrarExpress(app)
 cargaDinamicaRoutes(app)
 
+
 app.get('/', (req, res) => {
     getLogger().info('vivo!!!')
     res.status(200).send({ estado: 'vivo!!!' })

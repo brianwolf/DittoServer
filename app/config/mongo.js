@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as vars from './variables.js'
+import * as vars from './variables.js';
 
 const option = { useUnifiedTopology: true, useNewUrlParser: true }
 
@@ -11,7 +11,10 @@ const MONGO_DB = vars.get('MONGO_DB')
 
 const coneccion_str = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
 
-export const coneccion = mongoose.connect(coneccion_str, option, err => {
-    if (err) throw err
-    console.log(`Coneccion establecida con ${MONGO_DB}`)
+export const mongo = mongoose.connect(coneccion_str, option, err => {
+    if (err) {
+        console.error(`Error coneccion con mongoDB, coneccion: ${coneccion_str}`)
+        throw err
+    }
+    console.log(`Conectado a la base ${MONGO_DB} de MongoDB`)
 })

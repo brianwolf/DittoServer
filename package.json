@@ -4,8 +4,9 @@
   "description": "Mockeador de servicios Rest",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon --experimental-modules app.js"
+    "start": "node --experimental-modules app.js",
+    "demon": "nodemon --experimental-modules app.js",
+    "stop": "kill $(lsof -t -i:7000)"
   },
   "type": "module",
   "author": "Brian Lobo",
@@ -13,8 +14,10 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongoose": "^5.4.10",
+    "mongoose": "^5.8.3",
     "nodemon": "^1.19.1",
-    "string-similarity": "^3.0.0"
+    "string-similarity": "^3.0.0",
+    "log4js": "^6.1.0",
+    "http-status-codes": "^1.4.0"
   }
 }

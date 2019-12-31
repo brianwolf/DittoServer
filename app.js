@@ -1,63 +1,29 @@
 import express from 'express';
-import http from 'http';
+import { getLogger } from './app/config/logger.js';
+import { mongo } from "./app/config/mongo.js";
+import { configrarExpress } from './app/config/rest.js';
+import { get } from './app/config/variables.js';
+import { cargaDinamicaRoutes } from './app/utils/express_util.js';
 
-const app = express()
+let app = express()
 
-// ------------------------------------
-// ARCHIVO DE CONFIGURACION
-// ------------------------------------
-import config from './app/config/desa.json'
-
-
-// ------------------------------------
-// BASE DE DATOS
-// ------------------------------------
-import mongoose from 'mongoose';
-const option = { useNewUrlParser: true }
-
-mongoose.connect(`mongodb://${config.db.mongo.host}:${config.db.mongo.puerto}/${config.db.mongo.base}`, option, err => {
-    if (err) throw err
-    console.log(`Coneccion establecida con ${config.db.mongo.base}`)
-})
-// exports.db = mongoose.connection
+configrarExpress(app)
+cargaDinamicaRoutes(app)
 
 
-// ------------------------------------
-// JSON
-// ------------------------------------
-import bodyParser from 'body-parser';
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
-const jsonParser = bodyParser.json()
-
-app.use(urlencodedParser)
-app.use(jsonParser)
-
-
-// ------------------------------------
-// RUTAS
-// ------------------------------------
-import fs from 'fs'
-const pathDeLasRutas = './app/routes'
-
-fs.readdirSync(pathDeLasRutas).forEach(async archivo => {
-
-    var rutaAExportar = pathDeLasRutas + '/' + archivo
-    console.log('ruta exportada -> ' + rutaAExportar)
-
-    const moduloConRuta = await import(rutaAExportar)
-    app.use('/', await moduloConRuta.default());
-});
-
-
-// ------------------------------------
-// SERVIDOR
-// ------------------------------------
 app.get('/', (req, res) => {
-    res.status(200).send('Esta vivo, VIVO...!!!')
+    getLogger().info('vivo!!!')
+    res.status(200).send({ ditto: 'yo te elijo' })
 })
 
-http.createServer(app).listen(config.servidor.puerto, () => {
-    console.log(`\nServidor escuchando en http://${config.servidor.host}:${config.servidor.puerto}/`)
+
+const HOST = get('HOST')
+const PORT = get('PORT')
+
+let server = app.listen(PORT, () => {
+    console.log(`\nServidor escuchando en http://${HOST}:${PORT}/`);
 })
+
+mongo
 
 export default app;

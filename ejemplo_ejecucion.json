@@ -1,0 +1,19 @@
+{
+    "nombre": "un_proyecto",
+    "config": {
+        "puerto": 8080,
+        "prefijoRuta": "/api/v1/sieel-jlib"
+    }, 
+    "dittos": [
+        "soyUnDitto",
+        {
+            "nombre": "yoTambien"
+        }
+    ],
+    "otrosProyectos": [
+        "soyUnProyecto",
+        {
+            "nombre": "yYo"
+        }
+    ]
+}

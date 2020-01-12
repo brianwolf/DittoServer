@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --experimental-modules app.js",
+    "prod": "node --experimental-modules app.js",
+    "dev": "node --experimental-modules app.js",
     "demon": "nodemon --experimental-modules app.js",
     "stop": "kill $(lsof -t -i:7000)"
   },

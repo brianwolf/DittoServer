@@ -1,5 +1,5 @@
 import process from 'process';
-import { mapa } from './MapaVariables.js';
+import { mapa } from './mapaVariables.js';
 
 /**
  * Devuelve el valor de su correspondiente variable de ambiente,

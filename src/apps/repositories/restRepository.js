@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const { DittoRestModel, FuncionRestModel } = require('../repositories/schemas/restSchemas')
+const { DittoRestModel, FuncionRestModel } = require('./schemas/restSchemas')
 const { FuncionRest, DittoRest } = require('../models/modelosRest')
 
 /**

@@ -1,5 +1,5 @@
 import express from 'express';
-import { mapa, no_mostrar } from "../config/MapaVariables.js";
+import { mapa, no_mostrar } from "../config/mapaVariables.js";
 import * as vars from "../config/variables.js";
 import { AppException } from "../models/errores.js";
 

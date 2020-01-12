@@ -1,15 +1,12 @@
 import fs from 'fs';
-import process from 'process';
 import { configrarExpress } from "../config/rest.js";
-
-const directorioRutas = process.cwd() + '/app/routes'
 
 /**
  * Carga dinamicamente las rutas dentro de la carpeta routes del proyecto
  * 
  * @param {*} app 
  */
-export function cargaDinamicaRoutes(app) {
+export function cargaDinamicaRoutes(app, directorioRutas) {
 
     console.log(`\nCarga dinamica de rutas`)
 
